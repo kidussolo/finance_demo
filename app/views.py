@@ -21,5 +21,14 @@ class ChartsOfAccount_RUD(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.ChartsOfAccount.objects.all()
     serializer_class = serializers.ChartsOfAccountSerializer
     lookup_field = "id"
+
+class UnitOfMeasurement_LA(generics.ListCreateAPIView):
+    queryset = models.UnitOfMeasurement.objects.all()
+    serializer_class = serializers.UnitOfMeasurementSerializer
+
+class UnitOfMeasurement_RUD(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.UnitOfMeasurement.objects.all()
+    serializer_class = serializers.UnitOfMeasurementSerializer
+    lookup_field = "id"
     
     
