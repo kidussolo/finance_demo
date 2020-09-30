@@ -12,6 +12,8 @@ urlpatterns = [
     path("item-locations/<int:id>", views.InvItemLocation_RUD.as_view()),
     path("item-categories", views.ItemCategory_LA.as_view()),
     path("item-categories/<int:id>", views.ItemCategory_RUD.as_view()),
+    path("item-movements", views.ItemMovements_LA.as_view()),
+    path("item-movements/<int:id>", views.ItemMovements_RUD.as_view()),
     path("items", views.Items_LA.as_view()),
     path("items/<int:id>", views.Items_RUD.as_view()),
     path("items-masterdata", views.ItemsMasterData_LA.as_view()),
