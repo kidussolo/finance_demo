@@ -39,7 +39,6 @@ class InventoryItem(models.Model):
     item = models.ForeignKey(ItemMasterData, on_delete=models.CASCADE)
     category = models.ForeignKey(InvItemCategory, on_delete=models.CASCADE)
     location = models.ForeignKey(InvItemLocation, on_delete=models.CASCADE)
-    quantity = models.FloatField()
     quantity = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -108,3 +107,21 @@ class Journal(models.Model):
     state = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+class Invoice(models.Model):
+    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
+    date = models.DateTimeField()
+    sub_total = models.FloatField()
+    total = models.FloatField()
+    total_tax = models.FloatField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class InvoiceLine(models.Model):
+    invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
+    item = models.CharField(max_length=50)
+    quantity = models.IntegerField()
+    tax = models.FloatField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+

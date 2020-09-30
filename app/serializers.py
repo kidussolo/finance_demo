@@ -79,3 +79,15 @@ class InvItemLocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.InvItemLocation
         fields = '__all__'
+
+class InvoiceSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Invoice
+        fields = '__all__'
+
+class InvoiceLineSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.InvoiceLine
+        fields = '__all__'
