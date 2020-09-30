@@ -57,4 +57,13 @@ class Items_RUD(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.InventoryItem.objects.all()
     serializer_class = serializers.InventoryItemSerializer
     lookup_field = "id"
+
+class ItemsMasterData_LA(generics.ListCreateAPIView):
+    queryset = models.ItemMasterData.objects.all()
+    serializer_class = serializers.ItemMasterDataSerializer
+
+class ItemsMasterData_RUD(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.ItemMasterData.objects.all()
+    serializer_class = serializers.ItemMasterDataSerializer
+    lookup_field = "id"
     
