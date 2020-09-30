@@ -102,4 +102,22 @@ class VatPostingGroup_RUD(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.VatPostingGroup.objects.all()
     serializer_class = serializers.VatPostingGroupSerializer
     lookup_field = "id"
+
+class VatPostingSetup_LA(generics.ListCreateAPIView):
+    queryset = models.VatPostingSetup.objects.all()
+    serializer_class = serializers.VatPostingSetupSerializer
+
+class VatPostingSetup_RUD(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.VatPostingSetup.objects.all()
+    serializer_class = serializers.VatPostingSetupSerializer
+    lookup_field = "id"
+
+class VendorPostingSetup_LA(generics.ListCreateAPIView):
+    queryset = models.VendorPostingSetup.objects.all()
+    serializer_class = serializers.VendorPostingSetupSerializer
+
+class VendorPostingSetup_RUD(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.VendorPostingSetup.objects.all()
+    serializer_class = serializers.VendorPostingSetupSerializer
+    lookup_field = "id"
     

@@ -23,5 +23,9 @@ urlpatterns = [
     path("vendor-posting-groups", views.VendorPostingGroup_LA.as_view()),
     path("vendor-posting-groups/<int:id>", views.VendorPostingGroup_RUD.as_view()),
     path("vat-posting-groups", views.VatPostingGroup_LA.as_view()),
-    path("var-posting-groups/<int:id>", views.VatPostingGroup_RUD.as_view()),
+    path("vat-posting-groups/<int:id>", views.VatPostingGroup_RUD.as_view()),
+    path("vat-posting-setups", views.VatPostingSetup_LA.as_view()),
+    path("var-posting-setups/<int:id>", views.VatPostingSetup_RUD.as_view()),
+    path("vendor-posting-setups", views.VendorPostingSetup_LA.as_view()),
+    path("vendor-posting-setups/<int:id>", views.VendorPostingSetup_RUD.as_view()),
     ]
