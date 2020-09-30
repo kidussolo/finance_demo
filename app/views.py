@@ -66,4 +66,13 @@ class ItemsMasterData_RUD(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.ItemMasterData.objects.all()
     serializer_class = serializers.ItemMasterDataSerializer
     lookup_field = "id"
+
+class Vendor_LA(generics.ListCreateAPIView):
+    queryset = models.Vendor.objects.all()
+    serializer_class = serializers.VendorSerializer
+
+class ItemsMasterData_RUD(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.Vendor.objects.all()
+    serializer_class = serializers.VendorSerializer
+    lookup_field = "id"
     

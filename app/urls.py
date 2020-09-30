@@ -16,4 +16,6 @@ urlpatterns = [
     path("items/<int:id>", views.Items_RUD.as_view()),
     path("items-masterdata", views.ItemsMasterData_LA.as_view()),
     path("items-masterdata/<int:id>", views.ItemsMasterData_RUD.as_view()),
+    path("vendors", views.Vendor_LA.as_view()),
+    path("vendors/<int:id>", views.Vendor_RUD.as_view()),
     ]
