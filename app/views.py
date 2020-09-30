@@ -30,5 +30,14 @@ class UnitOfMeasurement_RUD(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.UnitOfMeasurement.objects.all()
     serializer_class = serializers.UnitOfMeasurementSerializer
     lookup_field = "id"
+
+class InvItemLocation_LA(generics.ListCreateAPIView):
+    queryset = models.InvItemLocation.objects.all()
+    serializer_class = serializers.InvItemLocationSerializer
+
+class InvItemLocation_RUD(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.InvItemLocation.objects.all()
+    serializer_class = serializers.InvItemLocationSerializer
+    lookup_field = "id"
     
     
