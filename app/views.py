@@ -71,7 +71,7 @@ class Vendor_LA(generics.ListCreateAPIView):
     queryset = models.Vendor.objects.all()
     serializer_class = serializers.VendorSerializer
 
-class ItemsMasterData_RUD(generics.RetrieveUpdateDestroyAPIView):
+class Vendor_RUD(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.Vendor.objects.all()
     serializer_class = serializers.VendorSerializer
     lookup_field = "id"
@@ -92,5 +92,14 @@ class VendorPostingGroup_LA(generics.ListCreateAPIView):
 class VendorPostingGroup_RUD(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.VendorPostingGroup.objects.all()
     serializer_class = serializers.VendorPostingGroupSerializer
+    lookup_field = "id"
+
+class VatPostingGroup_LA(generics.ListCreateAPIView):
+    queryset = models.VatPostingGroup.objects.all()
+    serializer_class = serializers.VatPostingGroupSerializer
+
+class VatPostingGroup_RUD(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.VatPostingGroup.objects.all()
+    serializer_class = serializers.VatPostingGroupSerializer
     lookup_field = "id"
     
