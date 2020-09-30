@@ -84,4 +84,13 @@ class ItemMovements_RUD(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.InvItemMovement.objects.all()
     serializer_class = serializers.InvItemMovementSerializer
     lookup_field = "id"
+
+class VendorPostingGroup_LA(generics.ListCreateAPIView):
+    queryset = models.VendorPostingGroup.objects.all()
+    serializer_class = serializers.VendorPostingGroupSerializer
+
+class VendorPostingGroup_RUD(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.VendorPostingGroup.objects.all()
+    serializer_class = serializers.VendorPostingGroupSerializer
+    lookup_field = "id"
     

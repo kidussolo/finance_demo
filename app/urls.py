@@ -20,4 +20,6 @@ urlpatterns = [
     path("items-masterdata/<int:id>", views.ItemsMasterData_RUD.as_view()),
     path("vendors", views.Vendor_LA.as_view()),
     path("vendors/<int:id>", views.Vendor_RUD.as_view()),
+    path("vendor-posting-groups", views.VendorPostingGroup_LA.as_view()),
+    path("vendor-posting-groups/<int:id>", views.VendorPostingGroup_RUD.as_view()),
     ]
