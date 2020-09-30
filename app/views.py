@@ -46,7 +46,15 @@ class ItemCategory_LA(generics.ListCreateAPIView):
 
 class ItemCategory_RUD(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.InvItemCategory.objects.all()
-    serializer_class = serializers.ItemCategorySerializer
+    serializer_class = serializers.InvItemCategorySerializer
     lookup_field = "id"
     
+class Items_LA(generics.ListCreateAPIView):
+    queryset = models.InventoryItem.objects.all()
+    serializer_class = serializers.InventoryItemSerializer
+
+class Items_RUD(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.InventoryItem.objects.all()
+    serializer_class = serializers.InventoryItemSerializer
+    lookup_field = "id"
     

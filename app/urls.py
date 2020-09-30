@@ -12,4 +12,6 @@ urlpatterns = [
     path("item-locations/<int:id>", views.InvItemLocation_RUD.as_view()),
     path("item-categories", views.ItemCategory_LA.as_view()),
     path("item-categories/<int:id>", views.ItemCategory_RUD.as_view()),
+    path("items", views.Items_LA.as_view()),
+    path("items/<int:id>", views.Items_RUD.as_view()),
     ]
