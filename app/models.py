@@ -4,52 +4,75 @@ from django.db import models
 class ChartsOfAccount(models.Model):
     name = models.CharField(max_length=50)
     parent = models.ForeignKey("self", on_delete=models.CASCADE, blank=True, null=True)
+    account_number = models.IntegerField()
     report_type = models.CharField(max_length=50, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.name
+
 
 class UnitOfMeasurement(models.Model):
     name = models.CharField(max_length=50)
-    symbol = models.CharField(max_length=50)
+    short_form = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
 
 class InvItemCategory(models.Model):
     name = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.name
+
 class ItemMasterData(models.Model):
     name = models.CharField(max_length=50)
     category = models.ForeignKey(InvItemCategory, on_delete=models.CASCADE)
     unit_of_measurement = models.ForeignKey(UnitOfMeasurement, on_delete=models.CASCADE)
-    total_quantity = models.IntegerField()
+    total_quantity = models.IntegerField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
 
 class InvItemLocation(models.Model):
     name = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
     
 
 
 class InventoryItem(models.Model):
-    item = models.ForeignKey(ItemMasterData, on_delete=models.CASCADE)
-    category = models.ForeignKey(InvItemCategory, on_delete=models.CASCADE)
+    item = models.ForeignKey(ItemMasterData, related_name="item_master", on_delete=models.CASCADE)
+    category = models.ForeignKey(InvItemCategory, related_name="item_category", on_delete=models.CASCADE)
     location = models.ForeignKey(InvItemLocation, on_delete=models.CASCADE)
     quantity = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return str(self.item)
+
 
 
 class InvItemMovement(models.Model):
-    item = models.ForeignKey(ItemMasterData, on_delete=models.CASCADE)
+    item = models.ForeignKey(ItemMasterData, related_name="move_item_master", on_delete=models.CASCADE)
     quantity = models.IntegerField()
     date = models.DateField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return str(self.item)
 
 
 class VendorPostingGroup(models.Model):
@@ -61,14 +84,20 @@ class VendorPostingGroup(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.name
+
 
 
 class VendorPostingSetup(models.Model):
-    vendor = models.ForeignKey(VendorPostingGroup, on_delete=models.CASCADE)
-    item = models.ForeignKey(InvItemCategory, on_delete=models.CASCADE)
+    vendor = models.ForeignKey(VendorPostingGroup, related_name="vendor_posting", on_delete=models.CASCADE)
+    item = models.ForeignKey(InvItemCategory, related_name="item_posting", on_delete=models.CASCADE)
     purchase_account = models.ForeignKey(ChartsOfAccount, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.vendor) + " mappied to " + str(self.item)
 
     
 class VatPostingGroup(models.Model):
@@ -82,6 +111,9 @@ class VatPostingGroup(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.name
+
 class VatPostingSetup(models.Model):
     vendor_vat = models.ForeignKey(VatPostingGroup, related_name="vendor_vat", on_delete=models.CASCADE)
     item_vat = models.ForeignKey(VatPostingGroup, related_name="item_vat", on_delete=models.CASCADE)
@@ -89,12 +121,15 @@ class VatPostingSetup(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return str(self.vendor_vat) + " mappied to " + str(self.item_vat) 
+
 
 
 
 class Vendor(models.Model):
     name = models.CharField(max_length=50)
-    vendor = models.ForeignKey(VendorPostingGroup, on_delete=models.CASCADE)
+    vendor_posting_group = models.ForeignKey(VendorPostingGroup, blank=True, null=True, on_delete=models.CASCADE)
     address = models.CharField(max_length=255)
     email = models.EmailField()
     credit_limit = models.FloatField()
@@ -102,14 +137,21 @@ class Vendor(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.name
+
 class Journal(models.Model):
     name = models.CharField(max_length=50)
     state = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.name
+
 class Invoice(models.Model):
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
+    journal = models.ForeignKey(Journal, on_delete=models.CASCADE)
     date = models.DateTimeField()
     sub_total = models.FloatField()
     total = models.FloatField()
@@ -117,11 +159,17 @@ class Invoice(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return str(self.date)
+
 class InvoiceLine(models.Model):
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
-    item = models.CharField(max_length=50)
+    item = models.ForeignKey(ItemMasterData, on_delete=models.CASCADE)
     quantity = models.IntegerField()
     tax = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.item)
 
