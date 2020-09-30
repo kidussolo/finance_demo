@@ -10,4 +10,6 @@ urlpatterns = [
     path("unit-of-measurements/<int:id>", views.UnitOfMeasurement_RUD.as_view()),
     path("item-locations", views.InvItemLocation_LA.as_view()),
     path("item-locations/<int:id>", views.InvItemLocation_RUD.as_view()),
+    path("item-categories", views.ItemCategory_LA.as_view()),
+    path("item-categories/<int:id>", views.ItemCategory_RUD.as_view()),
     ]

@@ -39,5 +39,14 @@ class InvItemLocation_RUD(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.InvItemLocation.objects.all()
     serializer_class = serializers.InvItemLocationSerializer
     lookup_field = "id"
+
+class ItemCategory_LA(generics.ListCreateAPIView):
+    queryset = models.InvItemCategory.objects.all()
+    serializer_class = serializers.InvItemCategorySerializer
+
+class ItemCategory_RUD(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.InvItemCategory.objects.all()
+    serializer_class = serializers.ItemCategorySerializer
+    lookup_field = "id"
     
     
