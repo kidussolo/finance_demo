@@ -9,32 +9,38 @@ class ChartsOfAccount(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
-class ItemPostingGroup(models.Model):
-    name = models.CharField(max_length=50)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
 class UnitOfMeasurement(models.Model):
     name = models.CharField(max_length=50)
     symbol = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-
-class ItemMasterData(models.Model):
+class InvItemCategory(models.Model):
     name = models.CharField(max_length=50)
-    item_group = models.ForeignKey(ItemPostingGroup, on_delete=models.CASCADE)
-    unit_of_measurement = models.ForeignKey(UnitOfMeasurement, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-class InvItemCategory(models.Model):
+class ItemMasterData(models.Model):
     name = models.CharField(max_length=50)
+    category = models.ForeignKey(InvItemCategory, on_delete=models.CASCADE)
+    unit_of_measurement = models.ForeignKey(UnitOfMeasurement, on_delete=models.CASCADE)
+    total_quantity = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class InvItemLocation(models.Model):
+    name = models.CharField(max_length=50)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+
 
 class InventoryItem(models.Model):
-    item = models.OneToOneField(ItemMasterData, on_delete=models.CASCADE)
-    quantity = models.FloatField()
+    item = models.ForeignKey(ItemMasterData, on_delete=models.CASCADE)
     category = models.ForeignKey(InvItemCategory, on_delete=models.CASCADE)
+    location = models.ForeignKey(InvItemLocation, on_delete=models.CASCADE)
+    quantity = models.FloatField()
+    quantity = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -50,7 +56,7 @@ class InvItemMovement(models.Model):
 class VendorPostingGroup(models.Model):
     name = models.CharField(max_length=50)
     grouping = models.ManyToManyField(
-        ItemPostingGroup,
+        InvItemCategory,
         through='VendorPostingSetup',
     )
     created_at = models.DateTimeField(auto_now_add=True)
@@ -60,7 +66,7 @@ class VendorPostingGroup(models.Model):
 
 class VendorPostingSetup(models.Model):
     vendor = models.ForeignKey(VendorPostingGroup, on_delete=models.CASCADE)
-    item = models.ForeignKey(ItemPostingGroup, on_delete=models.CASCADE)
+    item = models.ForeignKey(InvItemCategory, on_delete=models.CASCADE)
     purchase_account = models.ForeignKey(ChartsOfAccount, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -87,7 +93,7 @@ class VatPostingSetup(models.Model):
 
 
 
-class vendor(models.Model):
+class Vendor(models.Model):
     name = models.CharField(max_length=50)
     vendor = models.ForeignKey(VendorPostingGroup, on_delete=models.CASCADE)
     address = models.CharField(max_length=255)
