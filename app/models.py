@@ -1,4 +1,7 @@
 from django.db import models
+from django.db.models.signals import post_save
+from app import signals
+
 
 
 class ChartsOfAccount(models.Model):
@@ -179,3 +182,24 @@ class InvoiceLine(models.Model):
     def __str__(self):
         return str(self.item)
 
+class JournalEntry(models.Model):
+    date = models.DateTimeField()
+    journal = models.ForeignKey(Journal, on_delete=models.PROTECT)
+    description = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.description
+
+class JournalEntryLine(models.Model):
+    journal_entry = models.ForeignKey(Journal, related_name="journal_entry", on_delete=models.PROTECT)
+    amount = models.FloatField()
+    account = models.ForeignKey(ChartsOfAccount, on_delete=models.PROTECT)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.amount)
+
+post_save.connect(signals.record_journal_transactions, sender=InvoiceLine)
