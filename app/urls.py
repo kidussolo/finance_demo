@@ -28,4 +28,6 @@ urlpatterns = [
     path("var-posting-setups/<int:id>", views.VatPostingSetup_RUD.as_view()),
     path("vendor-posting-setups", views.VendorPostingSetup_LA.as_view()),
     path("vendor-posting-setups/<int:id>", views.VendorPostingSetup_RUD.as_view()),
+    path("invoices", views.Invoice_LA.as_view()),
+    path("invoices/<int:id>", views.Invoice_RUD.as_view()),
     ]

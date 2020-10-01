@@ -30,10 +30,26 @@ class InvItemCategory(models.Model):
     def __str__(self):
         return self.name
 
+class VatPostingGroup(models.Model):
+    name = models.CharField(max_length=50)
+    vat = models.IntegerField()
+    grouping = models.ManyToManyField(
+        "self",
+        through='VatPostingSetup',
+        through_fields=('vendor_vat', 'item_vat'),
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
 class ItemMasterData(models.Model):
     name = models.CharField(max_length=50)
     category = models.ForeignKey(InvItemCategory, on_delete=models.CASCADE)
     unit_of_measurement = models.ForeignKey(UnitOfMeasurement, on_delete=models.CASCADE)
+    vat_posting_group = models.ForeignKey(VatPostingGroup, blank=True, null=True, on_delete=models.CASCADE)
+    unit_price = models.FloatField(blank=True, null=True)
     total_quantity = models.IntegerField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -100,19 +116,7 @@ class VendorPostingSetup(models.Model):
         return str(self.vendor) + " mappied to " + str(self.item)
 
     
-class VatPostingGroup(models.Model):
-    name = models.CharField(max_length=50)
-    vat = models.IntegerField()
-    grouping = models.ManyToManyField(
-        "self",
-        through='VatPostingSetup',
-        through_fields=('vendor_vat', 'item_vat'),
-    )
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return self.name
 
 class VatPostingSetup(models.Model):
     vendor_vat = models.ForeignKey(VatPostingGroup, related_name="vendor_vat", on_delete=models.CASCADE)
@@ -130,6 +134,7 @@ class VatPostingSetup(models.Model):
 class Vendor(models.Model):
     name = models.CharField(max_length=50)
     vendor_posting_group = models.ForeignKey(VendorPostingGroup, blank=True, null=True, on_delete=models.CASCADE)
+    vat_posting_group = models.ForeignKey(VatPostingGroup, blank=True, null=True, on_delete=models.CASCADE)
     address = models.CharField(max_length=255)
     email = models.EmailField()
     credit_limit = models.FloatField()
@@ -163,8 +168,8 @@ class Invoice(models.Model):
         return str(self.date)
 
 class InvoiceLine(models.Model):
-    invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
-    item = models.ForeignKey(ItemMasterData, on_delete=models.CASCADE)
+    invoice = models.ForeignKey(Invoice, related_name="invoice_invoiceline", on_delete=models.CASCADE)
+    item = models.ForeignKey(ItemMasterData, related_name="item_master_data", on_delete=models.CASCADE)
     quantity = models.IntegerField()
     tax = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)

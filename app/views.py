@@ -120,4 +120,13 @@ class VendorPostingSetup_RUD(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.VendorPostingSetup.objects.all()
     serializer_class = serializers.VendorPostingSetupSerializer
     lookup_field = "id"
+
+class Invoice_LA(generics.ListCreateAPIView):
+    queryset = models.Invoice.objects.all()
+    serializer_class = serializers.InvoiceSerializer
+
+class Invoice_RUD(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.Invoice.objects.all()
+    serializer_class = serializers.InvoiceSerializer
+    lookup_field = "id"
     
