@@ -99,7 +99,7 @@ class InvoiceSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def create(self, validated_data):
-        invoice, invoice_lines = self.calculate_vat(validated_data)
+        invoice, invoice_lines = self.calculate_total_amount_and_vat(validated_data)
         invoice = models.Invoice.objects.create(**invoice)
 
         for invoice_line in invoice_lines:
@@ -107,7 +107,21 @@ class InvoiceSerializer(serializers.ModelSerializer):
 
         return invoice
 
-    def calculate_vat(self, invoice_data):
+    @transaction.atomic
+    def update(self, instance, validated_data):
+        invoice, invoice_line_data = self.calculate_vat(validated_data)
+        invoice_lines = list((instance.invoice_invoiceline).all())
+
+        for nested_data in invoice_line_data:
+            line_instance = invoice_lines.pop(0)
+            line_instance.item = nested_data.get("item", line_instance.item)
+            line_instance.quantity = nested_data.get("quantity", line_instance.quantity)
+            line_instance.tax = nested_data.get("tax", line_instance.tax)
+            line_instance.save()
+
+        return super(InvoiceSerializer, self).update(instance, invoice)
+
+    def calculate_total_amount_and_vat(self, invoice_data):
         invoice_lines = invoice_data.pop("invoice_invoiceline")
         total = 0
         vat = 0
@@ -126,20 +140,6 @@ class InvoiceSerializer(serializers.ModelSerializer):
         invoice_data["total"] = total + vat
 
         return invoice_data, invoice_lines
-
-    @transaction.atomic
-    def update(self, instance, validated_data):
-        invoice, invoice_line_data = self.calculate_vat(validated_data)
-        invoice_lines = list((instance.invoice_invoiceline).all())
-
-        for nested_data in invoice_line_data:
-            line_instance = invoice_lines.pop(0)
-            line_instance.item = nested_data.get("item", line_instance.item)
-            line_instance.quantity = nested_data.get("quantity", line_instance.quantity)
-            line_instance.tax = nested_data.get("tax", line_instance.tax)
-            line_instance.save()
-
-        return super(InvoiceSerializer, self).update(instance, invoice)
 
 
 
