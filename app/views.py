@@ -113,12 +113,12 @@ class VatPostingSetup_RUD(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = "id"
 
 class VendorPostingSetup_LA(generics.ListCreateAPIView):
-    queryset = models.VendorPostingSetup.objects.all()
-    serializer_class = serializers.VendorPostingSetupSerializer
+    queryset = models.GeneralBuisnessPostingSetup.objects.all()
+    serializer_class = serializers.GeneralBuisnessPostingSetupSerializer
 
 class VendorPostingSetup_RUD(generics.RetrieveUpdateDestroyAPIView):
-    queryset = models.VendorPostingSetup.objects.all()
-    serializer_class = serializers.VendorPostingSetupSerializer
+    queryset = models.GeneralBuisnessPostingSetup.objects.all()
+    serializer_class = serializers.GeneralBuisnessPostingSetupSerializer
     lookup_field = "id"
 
 class Invoice_LA(generics.ListCreateAPIView):

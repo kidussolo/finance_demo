@@ -45,10 +45,10 @@ class VendorPostingGroupSerializer(serializers.ModelSerializer):
         model = models.VendorPostingGroup
         fields = '__all__'
 
-class VendorPostingSetupSerializer(serializers.ModelSerializer):
+class GeneralBuisnessPostingSetupSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = models.VendorPostingSetup
+        model = models.GeneralBuisnessPostingSetup
         fields = '__all__'
 
 class VatPostingGroupSerializer(serializers.ModelSerializer):
